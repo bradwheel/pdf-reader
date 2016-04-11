@@ -6,6 +6,7 @@ describe PDF::Reader do
   let(:cairo_basic)   { pdf_spec_file("cairo-basic")}
   let(:oo3)           { pdf_spec_file("oo3")}
   let(:no_text_spaces) { pdf_spec_file("no_text_spaces")}
+  let(:adobe_acroform) { pdf_spec_file("adobe_acroform")}
 
   describe "open() class method" do
 
@@ -98,6 +99,23 @@ describe PDF::Reader do
         metadata = PDF::Reader.new(no_text_spaces).metadata
 
         expect(metadata.encoding).to eql Encoding::UTF_8
+      end
+    end
+  end
+
+  describe "acroform()" do
+    context "with cairo-basic" do
+      it "should return nil" do
+        expect(PDF::Reader.new(cairo_basic).acroform).to be_nil
+      end
+    end
+
+    context "with adobe_acroform" do
+      it "should return a hash of with field references" do
+        acroform = PDF::Reader.new(adobe_acroform).acroform
+
+        expect(acroform).to be_a_kind_of(Hash)
+        expect(acroform[:Fields].size).to eql(29)
       end
     end
   end

@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require 'pp'
+require 'rubygems'
+require 'pdf/reader'
+
+if ARGV.empty?
+  reader = PDF::Reader.new($stdin)
+else
+  reader = PDF::Reader.new(ARGV[0])
+end
+
+puts reader.methods.sort - Object.new.methods
+acroform = reader.acroform
+if acroform
+  acroform[:Fields] = acroform[:Fields].map do |field|
+    reader.objects.deref!(field) if field.is_a?(PDF::Reader::Reference)
+  end
+  pp acroform
+else
+  $stderr.puts "File does not contain AcroForm fields"
+end

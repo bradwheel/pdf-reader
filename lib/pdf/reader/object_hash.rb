@@ -1,4 +1,5 @@
 # coding: utf-8
+require 'pry'
 
 class PDF::Reader
   # Provides low level access to the objects in a PDF file via a hash-like

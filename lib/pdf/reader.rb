@@ -127,6 +127,10 @@ module PDF
       doc_strings_to_utf8(dict)
     end
 
+    def acroform
+      @objects.deref(root[:AcroForm])
+    end
+
     def metadata
       stream = @objects.deref(root[:Metadata])
       if stream.nil?
